@@ -8,18 +8,28 @@ import org.junit.Test;
 
 public class JDrivePropertiesTest {
 
+	JDriveProperties prop = null;
+	
+	
 	@Before
 	public void setUp() throws Exception {
+		prop = new JDriveProperties();
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		prop = null;
 	}
 
-	/*
+	
 	@Test
 	public void testGetPropValues() {
-		fail("Not yet implemented");
+		assertNotNull(prop);
+		try {
+			assertNotNull(prop.getPropValues());
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 	}
-	 */
+	 
 }

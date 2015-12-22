@@ -41,6 +41,7 @@ public class JDriveImp implements JDrive {
 		
 		String fName = "";
 		
+		//for linux and windows 
 		int startIndex = fileName.lastIndexOf('\\');
 		if(startIndex >= 0){
 			fName = fileName.substring(startIndex, fileName.length());
