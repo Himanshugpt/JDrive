@@ -20,7 +20,7 @@ public class JDriveProperties {
  
 		try {
 			Properties prop = new Properties();
-			String propFileName = "config.properties";
+			String propFileName = "jDrive.properties";
  
 			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
  

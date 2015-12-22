@@ -66,8 +66,8 @@ public class Auth {
 	 * @throws IOException
 	 */
 	private static Credential authorize() throws IOException {
-		// Load client secrets.
-		InputStream in = Auth.class.getResourceAsStream("/client_secret.json");
+		InputStream in = Auth.class.getResourceAsStream(CLIENT_SECRET_FILE);
+		new InputStreamReader(in);
 		GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
 		// Build flow and trigger user authorization request.
