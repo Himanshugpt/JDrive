@@ -27,6 +27,7 @@ import org.junit.Test;
 public class JDriveTest {
 	
 	private JDrive jDrive = null;
+	private com.google.api.services.drive.model.File file2 = null;
 
 	/**
 	 * @throws java.lang.Exception
@@ -55,13 +56,19 @@ public class JDriveTest {
 			List<String> lines = Arrays.asList("The first line", "The second line");
 			Path file = Paths.get("testFile2.txt");
 			Files.write(file, lines, Charset.forName("UTF-8"));
-			com.google.api.services.drive.model.File file2 = jDrive.insertFile(file.getFileName().toUri().getRawPath() , "test File Upload by Himanshu", "");
+			file2 = jDrive.insertFile(file.getFileName().toUri().getRawPath() , "test File Upload by Himanshu", "");
 			assertNotNull(file2);
 			assertNotNull(file2.getId());
+			assertTrue(jDrive.deleteFile(file2.getId()));
 		}catch (Exception e){
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@Test
+	public void testDeleteFile(){
+		assertFalse(jDrive.deleteFile("randomId")); 
 	}
 
 }

@@ -20,6 +20,6 @@ public interface JDrive {
 	 */
 	public File insertFile(String fileName, String description ,String parentId);
 	
-	public void deleteFile(String fileId);
+	public boolean deleteFile(String fileId);
 	
 }

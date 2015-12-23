@@ -24,7 +24,7 @@ import com.google.api.services.drive.model.ParentReference;
  *
  */
 public class JDriveImp implements JDrive {
-	
+
 	Drive service = null;
 
 	public JDriveImp() {
@@ -38,9 +38,9 @@ public class JDriveImp implements JDrive {
 	@Override
 	public File insertFile(String fileName, String description, String parentId) {
 		File body = new File();
-		
+
 		String fName = "";
-		
+
 		//for linux and windows 
 		int startIndex = fileName.lastIndexOf('\\');
 		if(startIndex >= 0){
@@ -49,7 +49,7 @@ public class JDriveImp implements JDrive {
 			startIndex = fileName.lastIndexOf('/');
 			fName = fileName.substring(startIndex, fileName.length());
 		}
-		
+
 		body.setTitle(fName);
 		body.setDescription(description);
 		String mimeType = null;
@@ -72,9 +72,15 @@ public class JDriveImp implements JDrive {
 	}
 
 	@Override
-	public void deleteFile(String fileId) {
+	public boolean deleteFile(String fileId) {
 		// TODO Auto-generated method stub
-		
+		try{
+			service.files().delete(fileId).execute();
+			return true;
+		} catch (IOException e) {
+			System.out.println("An error occured>>>>>: " + e);
+			return false;
+		}
 	}
 
 }
