@@ -2,7 +2,8 @@
 
 This wraps the Google Drive API to insert and delete files in Google Drive. This API let you use simple API like 
 ```
-public File insertFile(String fileName, String description ,String parentId);
+public File    insertFile(String fileName, String description ,String parentId);
+public boolean deleteFile (String fileId)l
 ```
 and removing the boiler plate code. 
 
