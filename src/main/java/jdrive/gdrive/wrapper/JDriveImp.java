@@ -3,6 +3,9 @@
  */
 package jdrive.gdrive.wrapper;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -18,6 +21,9 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.ParentReference;
+import com.google.gson.Gson;
+import com.mongodb.okr.Constants;
+import com.mongodb.okr.Record;
 
 /**
  * @author hgupta
@@ -83,4 +89,22 @@ public class JDriveImp implements JDrive {
 		}
 	}
 
+	public void uploadAllFiles(String path, String jsonFilePath) throws IOException {
+
+		for (int i = 0; i <arr.length; i++) {// arr.length
+			System.out.println("uploading File " + arr[i].manager.name);
+			if(Constants.EXCLUDE_MANAGERS.containsKey(arr[i].manager.name)){
+				arr[i].alternativeLink =Constants.EXCLUDE_MANAGERS.get(arr[i].manager.name);
+				arr[i].fileId = Constants.EXCLUDE_MANAGERS_FILES_IDS.get(arr[i].manager.name);
+				System.out.println("Link Value set from MAP for " + arr[i].manager.name);
+			}else {
+				File file = insertFile(service, arr[i].manager.name+Constants.FILE_NAME_SUFFIX, "", Constants.PARENT, 
+						Constants.XL_MIME, path + arr[i].manager.name+ Constants.FILE_NAME_SUFFIX + Constants.FILE_EXTENSION);
+				arr[i].fileId = file.getId();
+				arr[i].alternativeLink = file.getAlternateLink();
+			}
+			
+		}
+
+	}
 }
