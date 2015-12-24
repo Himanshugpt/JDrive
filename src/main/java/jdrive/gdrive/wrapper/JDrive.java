@@ -39,6 +39,6 @@ public interface JDrive {
 	 * @param jsonFilePath
 	 * @throws IOException
 	 */
-	public void uploadAllFiles(String path, String jsonFilePath) throws IOException;
+	public void uploadAllFiles(String path, String parentId) throws IOException;
 	
 }

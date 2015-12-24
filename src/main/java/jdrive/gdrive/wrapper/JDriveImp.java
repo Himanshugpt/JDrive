@@ -21,9 +21,6 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.ParentReference;
-import com.google.gson.Gson;
-import com.mongodb.okr.Constants;
-import com.mongodb.okr.Record;
 
 /**
  * @author hgupta
@@ -50,10 +47,10 @@ public class JDriveImp implements JDrive {
 		//for linux and windows 
 		int startIndex = fileName.lastIndexOf('\\');
 		if(startIndex >= 0){
-			fName = fileName.substring(startIndex, fileName.length());
+			fName = fileName.substring(startIndex+1, fileName.length());
 		}else {
 			startIndex = fileName.lastIndexOf('/');
-			fName = fileName.substring(startIndex, fileName.length());
+			fName = fileName.substring(startIndex+1, fileName.length()-1);
 		}
 
 		body.setTitle(fName);
@@ -75,11 +72,10 @@ public class JDriveImp implements JDrive {
 			System.out.println("An error occured>>>>>: " + e);
 			return null;
 		}
-	}
+	} 
 
 	@Override
 	public boolean deleteFile(String fileId) {
-		// TODO Auto-generated method stub
 		try{
 			service.files().delete(fileId).execute();
 			return true;
@@ -88,23 +84,38 @@ public class JDriveImp implements JDrive {
 			return false;
 		}
 	}
-
-	public void uploadAllFiles(String path, String jsonFilePath) throws IOException {
-
-		for (int i = 0; i <arr.length; i++) {// arr.length
-			System.out.println("uploading File " + arr[i].manager.name);
-			if(Constants.EXCLUDE_MANAGERS.containsKey(arr[i].manager.name)){
-				arr[i].alternativeLink =Constants.EXCLUDE_MANAGERS.get(arr[i].manager.name);
-				arr[i].fileId = Constants.EXCLUDE_MANAGERS_FILES_IDS.get(arr[i].manager.name);
-				System.out.println("Link Value set from MAP for " + arr[i].manager.name);
-			}else {
-				File file = insertFile(service, arr[i].manager.name+Constants.FILE_NAME_SUFFIX, "", Constants.PARENT, 
-						Constants.XL_MIME, path + arr[i].manager.name+ Constants.FILE_NAME_SUFFIX + Constants.FILE_EXTENSION);
-				arr[i].fileId = file.getId();
-				arr[i].alternativeLink = file.getAlternateLink();
+	
+	public void uploadAllFilesMultiThreaded(String path, String parentId){
+		class UploadFile implements Runnable{
+			
+			String fileName, parentId;
+			
+			UploadFile(String fileName, String parentId){
+				this.fileName = fileName;
+				this.parentId = parentId;
+			}
+			
+			@Override
+			public void run() {
+				File f = insertFile(fileName, "", parentId);
 			}
 			
 		}
+	}
+
+	public void uploadAllFiles(String path, String parentId) throws IOException {
+		if(parentId== null) parentId = "";
+		java.io.File folder = new java.io.File(path);
+		java.io.File[] files = folder.listFiles();
+		long startTime = System.nanoTime();
+		for (int i = 0; i <files.length; i++) {
+			if(files[i].isFile()){
+				System.out.println("uploading " + files[i].getName());
+				File f = this.insertFile(files[i].getAbsolutePath(),"", parentId);
+			}
+		}
+		long endTime = System.nanoTime();
+		System.out.println("Took "+(endTime - startTime) + " ns"); 
 
 	}
 }

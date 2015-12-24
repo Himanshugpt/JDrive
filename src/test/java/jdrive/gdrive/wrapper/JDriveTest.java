@@ -28,6 +28,7 @@ public class JDriveTest {
 	
 	private JDrive jDrive = null;
 	private com.google.api.services.drive.model.File file2 = null;
+	private String parentId = "0B_8p-AccPUmcdHNKRDMxZVVyQ1E";
 
 	/**
 	 * @throws java.lang.Exception
@@ -69,6 +70,19 @@ public class JDriveTest {
 	@Test
 	public void testDeleteFile(){
 		assertFalse(jDrive.deleteFile("randomId")); 
+	}
+	
+	@Test
+	public void testUploadAllFiles(){
+		System.out.println("test Upload All Files");
+		try {
+			///Users/hgupta/Desktop/TestFolder
+			jDrive.uploadAllFiles("/Users/hgupta/Desktop/TestFolder", parentId);
+			assertTrue(true);
+		}catch(Exception e){
+			e.printStackTrace();
+			fail("uploadAllFiles Failed");
+		}
 	}
 
 }
