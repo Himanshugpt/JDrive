@@ -18,4 +18,5 @@ gradle test
 ```
 This will generate a test report at build/test/index.html .  
 
-## Test Cases in this project depedns on hard coded values which are specific for the current user. I have not made it configurable yet, so if you want to use it then please go through it and fix it for yourself.  
+## Test Cases 
+In this project jUnit test cases depedns on hard coded values which are specific for the current user. I have not made it configurable yet, so if you want to use it then please go through it and fix it for yourself.  
