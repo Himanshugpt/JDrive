@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>jDrive by himanshugpt</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>jDrive</h1>
+        <p>Its a wrapper for Google Drive API which makes using Google Drive easy to use. </p>
+
+        <p class="view"><a href="https://github.com/himanshugpt/jDrive">View the Project on GitHub <small>himanshugpt/jDrive</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/himanshugpt/jDrive/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/himanshugpt/jDrive/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/himanshugpt/jDrive">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="jdrive" class="anchor" href="#jdrive" aria-hidden="true"><span class="octicon octicon-link"></span></a>JDrive</h1>
+
+<p>This wraps the Google Drive API to insert and delete files in Google Drive. This API let you use simple API like </p>
+
+<pre><code>public File insertFile(String fileName, String description ,String parentId);
+</code></pre>
+
+<pre><code>public boolean deleteFile (String fileId);
+</code></pre>
+
+<p>and removing the boiler plate code. </p>
+
+<p>This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at <a href="https://developers.google.com/drive/v2/web/quickstart/java">https://developers.google.com/drive/v2/web/quickstart/java</a> and place the file in the resources folder. A manual authentiation of access will be required at the first time to validate the access. </p>
+
+<p>For sanity checks you can use the test cases. Run </p>
+
+<pre><code>gradle test
+</code></pre>
+
+<p>This will generate a test report at build/test/index.html .  </p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/himanshugpt">himanshugpt</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
