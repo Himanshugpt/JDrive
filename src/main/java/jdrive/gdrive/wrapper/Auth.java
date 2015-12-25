@@ -3,6 +3,8 @@ package jdrive.gdrive.wrapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,9 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 
+import com.google.gdata.client.spreadsheet.*;
+import com.google.gdata.data.spreadsheet.*;
+import com.google.gdata.util.*;
 import jdrive.gdrive.util.JDriveProperties;
 
 public class Auth {
@@ -44,6 +49,8 @@ public class Auth {
 			"https://spreadsheets.google.com/feeds/");
 	
 	private static String CLIENT_SECRET_FILE ;
+	
+	private Credential credential;
 	
 	public Auth() {
 		try {
@@ -79,8 +86,20 @@ public class Auth {
 	}
 	
 	public Drive getDriveService() throws IOException {
-		Credential credential = Auth.authorize();
+		if (null == credential){
+			credential = Auth.authorize();
+		}
 		return new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME).build();
+	}
+	
+	public SpreadsheetService getSpreadsheetService() throws IOException, MalformedURLException, ServiceException {
+		SpreadsheetService service = new SpreadsheetService("MySpreadsheetIntegration-v1");
+		service.setProtocolVersion(SpreadsheetService.Versions.V3);
+		if (null == credential){
+			credential = Auth.authorize();
+		}
+		service.setOAuth2Credentials(credential);
+		return service;
 	}
 
 }

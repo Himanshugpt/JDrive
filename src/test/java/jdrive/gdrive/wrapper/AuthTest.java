@@ -7,9 +7,7 @@ import java.io.IOException;
 import org.testng.annotations.*;
 
 import com.google.api.services.drive.Drive;
-
-import junit.framework.AssertionFailedError;
-
+import com.google.gdata.client.spreadsheet.*;
 public class AuthTest {
 
 	private Auth auth= null;
@@ -39,5 +37,15 @@ public class AuthTest {
 			assertNotNull(drive);
 		}
 		
+	}
+	
+	@Test
+	public void testSpreadsheetService(){
+		SpreadsheetService spreadsheetService = null;
+		try {
+			spreadsheetService = auth.getSpreadsheetService();
+		}catch(Exception e){
+			assertNotNull(spreadsheetService);
+		}
 	}
 }

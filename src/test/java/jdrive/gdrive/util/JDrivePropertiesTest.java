@@ -8,7 +8,6 @@ public class JDrivePropertiesTest {
 
 	JDriveProperties prop = null;
 	
-	
 	@BeforeSuite
 	public void setUp() throws Exception {
 		prop = new JDriveProperties();
@@ -19,7 +18,6 @@ public class JDrivePropertiesTest {
 		prop = null;
 	}
 
-	
 	@Test
 	public void testGetPropValues() {
 		assertNotNull(prop);

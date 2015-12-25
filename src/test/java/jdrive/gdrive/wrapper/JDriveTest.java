@@ -14,10 +14,6 @@ import java.util.List;
 import org.testng.annotations.*;
 
 /**
- * 
- */
-
-/**
  * @author hgupta
  *
  */
@@ -70,7 +66,6 @@ public class JDriveTest {
 	
 	@Test
 	public void testInsertFile() {
-		
 		try {
 			List<String> lines = Arrays.asList("The first line", "The second line");
 			Path file = Paths.get("testFile2.txt");
@@ -94,7 +89,6 @@ public class JDriveTest {
 	public void testUploadAllFiles(){
 		System.out.println("test Upload All Files");
 		try {
-			///Users/hgupta/Desktop/TestFolder
 			jDrive.uploadAllFiles("/Users/hgupta/Desktop/TestFolder", parentId);
 			assertTrue(true);
 		}catch(Exception e){
