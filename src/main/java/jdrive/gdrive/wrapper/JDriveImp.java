@@ -3,6 +3,7 @@
  */
 package jdrive.gdrive.wrapper;
 
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
@@ -76,7 +77,7 @@ public class JDriveImp implements JDrive {
 		}
 	}
 	
-	public void uploadAllFilesMultiThreaded(String path, String parentId){
+	public void uploadAllFilesMultiThreaded(String path, String parentId, FileFilter filter){
 		
 		class UploadFile implements Runnable{
 			String fileName, parentId;
@@ -97,7 +98,7 @@ public class JDriveImp implements JDrive {
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
 		if(parentId== null) parentId = "";
 		java.io.File folder = new java.io.File(path);
-		java.io.File[] files = folder.listFiles();
+		java.io.File[] files = folder.listFiles(filter);
 		long startTime = System.nanoTime();
 		
 		for (int i = 0; i <files.length; i++) {

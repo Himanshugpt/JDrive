@@ -1,6 +1,9 @@
 package jdrive.gdrive.wrapper;
 
 import static org.testng.AssertJUnit.*;
+
+import java.io.File;
+import java.io.FileFilter;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,7 +50,17 @@ public class JDriveTest {
 	@Test
 	public void testUploadAllFilesMultiThreaded(){
 		try {
-			jDrive.uploadAllFilesMultiThreaded("/Users/hgupta/Desktop/TestFolder2", parentId);
+			FileFilter filter = new FileFilter() {
+				
+				@Override
+				public boolean accept(File pathname) {
+					if (pathname.getName().endsWith("pdf"))
+						return true;
+					return false;
+				}
+			};
+			
+			jDrive.uploadAllFilesMultiThreaded("/Users/hgupta/Desktop/TestFolder2", parentId, filter);
 			assertTrue(true);
 		}catch(Exception e){
 			e.printStackTrace();

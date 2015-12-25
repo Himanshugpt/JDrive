@@ -3,6 +3,7 @@
  */
 package jdrive.gdrive.wrapper;
 
+import java.io.FileFilter;
 import java.io.IOException;
 
 import com.google.api.services.drive.model.File;
@@ -46,7 +47,8 @@ public interface JDrive {
 	 * It uses insertFile method and uploads files using a thread pool.
 	 * @param path
 	 * @param parentId
+	 * @param filter
 	 */
-	public void uploadAllFilesMultiThreaded(String path, String parentId);
+	public void uploadAllFilesMultiThreaded(String path, String parentId, FileFilter filter);
 	
 }
