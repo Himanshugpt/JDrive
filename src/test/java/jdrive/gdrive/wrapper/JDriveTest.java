@@ -1,10 +1,6 @@
 package jdrive.gdrive.wrapper;
 
-import static org.junit.Assert.*;
-
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import static org.testng.AssertJUnit.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,9 +8,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.*;
 
 /**
  * 
@@ -33,7 +27,7 @@ public class JDriveTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeTest
 	public void setUp() throws Exception {
 		jDrive = new JDriveImp();
 	}
@@ -41,7 +35,7 @@ public class JDriveTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@After
+	@AfterTest
 	public void tearDown() throws Exception {
 	}
 
@@ -50,6 +44,17 @@ public class JDriveTest {
 		assertNotNull(jDrive);
 	}
 
+	@Test
+	public void testUploadAllFilesMultiThreaded(){
+		try {
+			jDrive.uploadAllFilesMultiThreaded("/Users/hgupta/Desktop/TestFolder2", parentId);
+			assertTrue(true);
+		}catch(Exception e){
+			e.printStackTrace();
+			fail("uploadAllFiles Failed");
+		}
+	}
+	
 	@Test
 	public void testInsertFile() {
 		
@@ -84,5 +89,7 @@ public class JDriveTest {
 			fail("uploadAllFiles Failed");
 		}
 	}
+	
+	
 
 }

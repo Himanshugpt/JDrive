@@ -1,12 +1,10 @@
 package jdrive.gdrive.wrapper;
 
-import static org.junit.Assert.*;
+import static org.testng.AssertJUnit.*;
 
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.*;
 
 import com.google.api.services.drive.Drive;
 
@@ -16,7 +14,7 @@ public class AuthTest {
 
 	private Auth auth= null;
 	
-	@Before
+	@BeforeTest
 	public void setUp() throws Exception {
 		try{
 			auth = new Auth();
@@ -25,7 +23,7 @@ public class AuthTest {
 		}
 	}
 
-	@After
+	@AfterTest
 	public void tearDown() throws Exception {
 		auth = null;
 	}

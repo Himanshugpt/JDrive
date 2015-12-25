@@ -1,22 +1,20 @@
 package jdrive.gdrive.util;
 
-import static org.junit.Assert.*;
+import static org.testng.AssertJUnit.*;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.*;
 
 public class JDrivePropertiesTest {
 
 	JDriveProperties prop = null;
 	
 	
-	@Before
+	@BeforeSuite
 	public void setUp() throws Exception {
 		prop = new JDriveProperties();
 	}
 
-	@After
+	@AfterTest
 	public void tearDown() throws Exception {
 		prop = null;
 	}

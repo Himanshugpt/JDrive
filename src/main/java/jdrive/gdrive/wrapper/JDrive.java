@@ -41,4 +41,12 @@ public interface JDrive {
 	 */
 	public void uploadAllFiles(String path, String parentId) throws IOException;
 	
+	/**
+	 * This method uploades all the files in the directory. 
+	 * It uses insertFile method and uploads files using a thread pool.
+	 * @param path
+	 * @param parentId
+	 */
+	public void uploadAllFilesMultiThreaded(String path, String parentId);
+	
 }

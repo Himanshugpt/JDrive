@@ -3,22 +3,13 @@
  */
 package jdrive.gdrive.wrapper;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.FileContent;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.ParentReference;
 
@@ -50,7 +41,7 @@ public class JDriveImp implements JDrive {
 			fName = fileName.substring(startIndex+1, fileName.length());
 		}else {
 			startIndex = fileName.lastIndexOf('/');
-			fName = fileName.substring(startIndex+1, fileName.length()-1);
+			fName = fileName.substring(startIndex+1, fileName.length());
 		}
 
 		body.setTitle(fName);
@@ -86,8 +77,8 @@ public class JDriveImp implements JDrive {
 	}
 	
 	public void uploadAllFilesMultiThreaded(String path, String parentId){
+		
 		class UploadFile implements Runnable{
-			
 			String fileName, parentId;
 			
 			UploadFile(String fileName, String parentId){
@@ -98,9 +89,26 @@ public class JDriveImp implements JDrive {
 			@Override
 			public void run() {
 				File f = insertFile(fileName, "", parentId);
+				if(f == null)
+					System.out.println("FIle cant be uploaded");
 			}
-			
 		}
+		
+		ExecutorService executorService = Executors.newFixedThreadPool(10);
+		if(parentId== null) parentId = "";
+		java.io.File folder = new java.io.File(path);
+		java.io.File[] files = folder.listFiles();
+		long startTime = System.nanoTime();
+		
+		for (int i = 0; i <files.length; i++) {
+			if(files[i].isFile()){
+				executorService.execute(new UploadFile(files[i].getAbsolutePath(), parentId));
+			}
+		}
+		executorService.shutdown();
+		
+		long endTime = System.nanoTime();
+		System.out.println("Took "+(endTime - startTime) + " ns"); 
 	}
 
 	public void uploadAllFiles(String path, String parentId) throws IOException {
@@ -118,4 +126,5 @@ public class JDriveImp implements JDrive {
 		System.out.println("Took "+(endTime - startTime) + " ns"); 
 
 	}
+	
 }

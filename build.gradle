@@ -12,7 +12,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 //apply plugin:'application'
 
-//mainClassName = "jdrive.gdrive.wrapper.Auth"
+//mainClassName = "jdrive.gdrive.wrapper.JDriveImp"
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -33,10 +33,12 @@ dependencies {
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // 'test.useTestNG()' to your build script.
-    testCompile 'junit:junit:4.12'
+    // testCompile 'junit:junit:4.12'
+    testCompile 'org.testng:testng:6.8.1'
 }
 
 test {
+	useTestNG()
 	testLogging {
 		exceptionFormat = "full"
 	}
