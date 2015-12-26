@@ -33,15 +33,19 @@
 
 <p>This wraps the Google Drive API to insert and delete files in Google Drive. This API let you use simple API like </p>
 
-<pre><code>public File insertFile(String fileName, String description ,String parentId);
+<pre><code>public File uploadFile(String fileName, String description ,String parentId);
 </code></pre>
 
 <pre><code>public boolean deleteFile (String fileId);
 </code></pre>
 
+<pre><code>public void uploadAllFiles(String path, String parentId) throws IOException;
+public void uploadAllFilesParallel(String path, String parentId, FileFilter filter);
+</code></pre>
+
 <p>and removing the boiler plate code. </p>
 
-<p>This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at <a href="https://developers.google.com/drive/v2/web/quickstart/java">https://developers.google.com/drive/v2/web/quickstart/java</a> and place the file in the resources folder. A manual authentiation of access will be required at the first time to validate the access. </p>
+<p>This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at <a href="https://developers.google.com/drive/v2/web/quickstart/java">https://developers.google.com/drive/v2/web/quickstart/java</a> and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. </p>
 
 <p>For sanity checks you can use the test cases. Run </p>
 
@@ -53,7 +57,18 @@
 <h2>
 <a id="test-cases" class="anchor" href="#test-cases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Test Cases</h2>
 
-<p>In this project jUnit test cases depedns on hard coded values which are specific for the current user. I have not made it configurable yet, so if you want to use it then please go through it and fix it for yourself.  </p>
+<p>In this project jUnit test cases depends on hard coded values which are specific for the current user. I have not made it configurable yet, so if you want to use it then please go through it and fix it for yourself.  </p>
+
+<h2>
+<a id="how-to-build" class="anchor" href="#how-to-build" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to build</h2>
+
+<p>You can download the source and go to project root directory. This project needs Grade(<a href="http://gradle.org/getting-started-gradle-java/">http://gradle.org/getting-started-gradle-java/</a>). More help for installing gradle is provided here(<a href="https://docs.gradle.org/current/userguide/installation.html">https://docs.gradle.org/current/userguide/installation.html</a>). 
+From the command line run </p>
+
+<pre><code>gradle build
+</code></pre>
+
+<p>This will compile the project and create a jar file named 'JDrive.jar' in the build/libs/ folder. </p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/himanshugpt">himanshugpt</a></p>
