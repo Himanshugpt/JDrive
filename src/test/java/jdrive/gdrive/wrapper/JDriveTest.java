@@ -56,7 +56,7 @@ public class JDriveTest {
 				}
 			};
 			
-			jDrive.uploadAllFilesMultiThreaded("/Users/hgupta/Desktop/TestFolder2", parentId, filter);
+			jDrive.uploadAllFilesParallel("/Users/hgupta/Desktop/TestFolder2", parentId, filter);
 			assertTrue(true);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -70,7 +70,7 @@ public class JDriveTest {
 			List<String> lines = Arrays.asList("The first line", "The second line");
 			Path file = Paths.get("testFile2.txt");
 			Files.write(file, lines, Charset.forName("UTF-8"));
-			file2 = jDrive.insertFile(file.getFileName().toUri().getRawPath() , "test File Upload by Himanshu", "");
+			file2 = jDrive.uploadFile(file.getFileName().toUri().getRawPath() , "test File Upload by Himanshu", "");
 			assertNotNull(file2);
 			assertNotNull(file2.getId());
 			assertTrue(jDrive.deleteFile(file2.getId()));

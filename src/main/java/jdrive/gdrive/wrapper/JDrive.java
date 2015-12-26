@@ -23,7 +23,7 @@ public interface JDrive {
 	 * @param parentId
 	 * @return
 	 */
-	public File insertFile(String fileName, String description ,String parentId);
+	public File uploadFile(String fileName, String description ,String parentId);
 	
 	/**
 	 * This Method deleted the file corresponding to the 
@@ -40,7 +40,7 @@ public interface JDrive {
 	 * @param jsonFilePath
 	 * @throws IOException
 	 */
-	public void uploadAllFiles(String path, String parentId) throws IOException;
+	public void uploadAllFiles(String path, String parentId, FileFilter filter) throws IOException;
 	
 	/**
 	 * This method uploades all the files in the directory. 
@@ -49,6 +49,6 @@ public interface JDrive {
 	 * @param parentId
 	 * @param filter
 	 */
-	public void uploadAllFilesMultiThreaded(String path, String parentId, FileFilter filter);
+	public void uploadAllFilesParallel(String path, String parentId, FileFilter filter);
 	
 }

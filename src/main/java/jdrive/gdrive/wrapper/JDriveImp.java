@@ -31,7 +31,7 @@ public class JDriveImp implements JDrive {
 	}
 
 	@Override
-	public File insertFile(String fileName, String description, String parentId) {
+	public File uploadFile(String fileName, String description, String parentId) {
 		File body = new File();
 
 		String fName = "";
@@ -77,7 +77,7 @@ public class JDriveImp implements JDrive {
 		}
 	}
 	
-	public void uploadAllFilesMultiThreaded(String path, String parentId, FileFilter filter){
+	public void uploadAllFilesParallel(String path, String parentId, FileFilter filter){
 		
 		class UploadFile implements Runnable{
 			String fileName, parentId;
@@ -89,7 +89,7 @@ public class JDriveImp implements JDrive {
 			
 			@Override
 			public void run() {
-				File f = insertFile(fileName, "", parentId);
+				File f = uploadFile(fileName, "", parentId);
 				if(f == null)
 					System.out.println("FIle cant be uploaded");
 			}
@@ -112,15 +112,15 @@ public class JDriveImp implements JDrive {
 		System.out.println("Took "+(endTime - startTime) + " ns"); 
 	}
 
-	public void uploadAllFiles(String path, String parentId) throws IOException {
+	public void uploadAllFiles(String path, String parentId, FileFilter filter) throws IOException {
 		if(parentId== null) parentId = "";
 		java.io.File folder = new java.io.File(path);
-		java.io.File[] files = folder.listFiles();
+		java.io.File[] files = folder.listFiles(filter);
 		long startTime = System.nanoTime();
 		for (int i = 0; i <files.length; i++) {
 			if(files[i].isFile()){
 				System.out.println("uploading " + files[i].getName());
-				File f = this.insertFile(files[i].getAbsolutePath(),"", parentId);
+				File f = this.uploadFile(files[i].getAbsolutePath(),"", parentId);
 			}
 		}
 		long endTime = System.nanoTime();
