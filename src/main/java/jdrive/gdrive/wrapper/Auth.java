@@ -44,7 +44,7 @@ public class Auth {
 	/** Directory to store user credentials for this application. */
 	private static java.io.File DATA_STORE_DIR ;
 
-	/** Global instance of the scopes required by this quickstart. */
+	/** Global instance of the scopes */
 	private static final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE_FILE, DriveScopes.DRIVE, 
 			"https://spreadsheets.google.com/feeds/");
 	
