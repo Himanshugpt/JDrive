@@ -13,7 +13,7 @@ import java.net.*;
 import java.util.*;
 
 
-public class SpreadsheetIntegration {
+public class SpreadsheetAPICLient {
 	
 	static List<SpreadsheetEntry> spreadsheets_entries = null;
 	

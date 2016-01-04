@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import org.testng.Assert;
 import org.testng.annotations.*;
 
 /**
@@ -40,7 +41,7 @@ public class JDriveTest {
 
 	@Test
 	public void testValidjDrive(){
-		assertNotNull(jDrive);
+		Assert.assertNotNull(jDrive);
 	}
 
 	@Test
@@ -57,7 +58,7 @@ public class JDriveTest {
 			};
 			
 			jDrive.uploadAllFilesParallel("/Users/hgupta/Desktop/TestFolder2", parentId, filter);
-			assertTrue(true);
+			Assert.assertTrue(true);
 		}catch(Exception e){
 			e.printStackTrace();
 			fail("uploadAllFiles Failed");
@@ -71,9 +72,9 @@ public class JDriveTest {
 			Path file = Paths.get("testFile2.txt");
 			Files.write(file, lines, Charset.forName("UTF-8"));
 			file2 = jDrive.uploadFile(file.getFileName().toUri().getRawPath() , "test File Upload by Himanshu", "");
-			assertNotNull(file2);
-			assertNotNull(file2.getId());
-			assertTrue(jDrive.deleteFile(file2.getId()));
+			Assert.assertNotNull(file2);
+			Assert.assertNotNull(file2.getId());
+			Assert.assertTrue(jDrive.deleteFile(file2.getId()));
 		}catch (Exception e){
 			e.printStackTrace();
 		}
@@ -82,15 +83,24 @@ public class JDriveTest {
 	
 	@Test
 	public void testDeleteFile(){
-		assertFalse(jDrive.deleteFile("randomId")); 
+		Assert.assertFalse(jDrive.deleteFile("randomId")); 
 	}
 	
 	@Test
 	public void testUploadAllFiles(){
 		System.out.println("test Upload All Files");
 		try {
-			jDrive.uploadAllFiles("/Users/hgupta/Desktop/TestFolder", parentId);
-			assertTrue(true);
+			FileFilter filter = new FileFilter() {
+				
+				@Override
+				public boolean accept(File pathname) {
+					if (pathname.getName().endsWith("pdf"))
+						return true;
+					return false;
+				}
+			};
+			jDrive.uploadAllFiles("/Users/hgupta/Desktop/TestFolder", parentId,filter);
+			Assert.assertTrue(true);
 		}catch(Exception e){
 			e.printStackTrace();
 			fail("uploadAllFiles Failed");

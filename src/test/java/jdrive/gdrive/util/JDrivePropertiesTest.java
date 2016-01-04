@@ -1,7 +1,6 @@
 package jdrive.gdrive.util;
 
-import static org.testng.AssertJUnit.*;
-
+import org.testng.Assert;
 import org.testng.annotations.*;
 
 public class JDrivePropertiesTest {
@@ -20,9 +19,9 @@ public class JDrivePropertiesTest {
 
 	@Test
 	public void testGetPropValues() {
-		assertNotNull(prop);
+		Assert.assertNotNull(prop);
 		try {
-			assertNotNull(prop.getPropValues());
+			Assert.assertNotNull(prop.getPropValues());
 		} catch (Exception e){
 			e.printStackTrace();
 		}

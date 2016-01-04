@@ -56,7 +56,7 @@ public interface JDrive {
 	 */
 	public void getAllSpreadSheets();
 	
-	//public void findSreadSheet(String name);
+	//public void findSpreadSheet(String name);
 	
 	
 }

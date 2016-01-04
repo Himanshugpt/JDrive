@@ -4,6 +4,7 @@ import static org.testng.AssertJUnit.*;
 
 import java.io.IOException;
 
+import org.testng.Assert;
 import org.testng.annotations.*;
 
 import com.google.api.services.drive.Drive;
@@ -32,7 +33,7 @@ public class AuthTest {
 		Drive drive = null;
 		try{
 			drive = auth.getDriveService();
-			assertNotNull(drive);
+			Assert.assertNotNull(drive);
 		}catch (IOException e){
 			assertNotNull(drive);
 		}
@@ -45,7 +46,7 @@ public class AuthTest {
 		try {
 			spreadsheetService = auth.getSpreadsheetService();
 		}catch(Exception e){
-			assertNotNull(spreadsheetService);
+			Assert.assertNotNull(spreadsheetService);
 		}
 	}
 }
