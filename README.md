@@ -1,6 +1,6 @@
 # JDrive
 
-This wraps the Google Drive API to insert and delete files in Google Drive. This API let you use simple API like 
+This wraps the Google Drive API to insert and delete files in Google Drive. Also functionality of accessing spreaadsheets are being added. This API let you use simple API like 
 ```
 public File uploadFile(String fileName, String description ,String parentId);
 ```
@@ -11,7 +11,7 @@ public boolean deleteFile (String fileId);
 public void uploadAllFiles(String path, String parentId) throws IOException;
 public void uploadAllFilesParallel(String path, String parentId, FileFilter filter);
 ```
-and removing the boiler plate code. 
+and removing the boiler plate code. On addition you can use single service to access multiple Google Drive sources(doc,spreadsheet). 
 
 This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at https://developers.google.com/drive/v2/web/quickstart/java and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. 
 
@@ -31,5 +31,7 @@ For sanity checks you can use the test cases. Run
 gradle test
 ```
 This will generate a test report at build/test/index.html .  
+
+If you have any suggestions then open a issue and I will try working on it. 
 
 
