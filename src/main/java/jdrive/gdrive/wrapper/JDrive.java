@@ -5,8 +5,12 @@ package jdrive.gdrive.wrapper;
 
 import java.io.FileFilter;
 import java.io.IOException;
+import java.util.List;
 
 import com.google.api.services.drive.model.File;
+import com.google.gdata.client.spreadsheet.*;
+import com.google.gdata.data.spreadsheet.*;
+import com.google.gdata.util.*;
 
 /**
  * @author hgupta
@@ -54,9 +58,21 @@ public interface JDrive {
 	/**
 	 * [getAllSpreadSheets description]
 	 */
-	public void getAllSpreadSheets();
-	
-	//public void findSpreadSheet(String name);
-	
-	
+	public List<SpreadsheetEntry> getAllSpreadSheets();
+
+ /**
+  * [findSpreadSheet description]
+  * @param  name [description]
+  * @return      [description]
+  */
+	public List<SpreadsheetEntry> findSpreadSheet(String name);
+
+
+ /**
+  * updateFileContent
+	*/
+  public void updateFileContent(WorksheetEntry worksheet, int row, int column, String content)
+				throws ServiceException, IOException;
+
+
 }

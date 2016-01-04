@@ -1,12 +1,13 @@
 /**
- * 
- */
+*
+*/
 package jdrive.gdrive.wrapper;
 
 import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,19 +18,23 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.ParentReference;
 import com.google.gdata.client.spreadsheet.*;
 import com.google.gdata.data.spreadsheet.*;
-
+import com.google.gdata.client.Query;
+import com.google.gdata.util.*;
 
 /**
- * @author hgupta
- *
- */
+* @author hgupta
+*
+*/
 public class JDriveImp implements JDrive {
 
 	Drive service = null;
 
+URL SPREADSHEET_FEED_URL = null;
+
 	public JDriveImp() {
 		try {
 			this.service = new Auth().getDriveService();
+			SPREADSHEET_FEED_URL = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -41,7 +46,7 @@ public class JDriveImp implements JDrive {
 
 		String fName = "";
 
-		//for linux and windows 
+		//for linux and windows
 		int startIndex = fileName.lastIndexOf('\\');
 		if(startIndex >= 0){
 			fName = fileName.substring(startIndex+1, fileName.length());
@@ -69,7 +74,7 @@ public class JDriveImp implements JDrive {
 			System.out.println("An error occured>>>>>: " + e);
 			return null;
 		}
-	} 
+	}
 
 	@Override
 	public boolean deleteFile(String fileId) {
@@ -81,40 +86,40 @@ public class JDriveImp implements JDrive {
 			return false;
 		}
 	}
-	
+
 	public void uploadAllFilesParallel(String path, String parentId, FileFilter filter){
-		
+
 		class UploadFile implements Runnable{
 			String fileName, parentId;
-			
+
 			UploadFile(String fileName, String parentId){
 				this.fileName = fileName;
 				this.parentId = parentId;
 			}
-			
+
 			@Override
 			public void run() {
 				File f = uploadFile(fileName, "", parentId);
 				if(f == null)
-					System.out.println("FIle cant be uploaded");
+				System.out.println("FIle cant be uploaded");
 			}
 		}
-		
+
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
 		if(parentId== null) parentId = "";
 		java.io.File folder = new java.io.File(path);
 		java.io.File[] files = folder.listFiles(filter);
 		long startTime = System.nanoTime();
-		
+
 		for (int i = 0; i <files.length; i++) {
 			if(files[i].isFile()){
 				executorService.execute(new UploadFile(files[i].getAbsolutePath(), parentId));
 			}
 		}
 		executorService.shutdown();
-		
+
 		long endTime = System.nanoTime();
-		System.out.println("Took "+(endTime - startTime) + " ns"); 
+		System.out.println("Took "+(endTime - startTime) + " ns");
 	}
 
 	public void uploadAllFiles(String path, String parentId, FileFilter filter) throws IOException {
@@ -129,30 +134,92 @@ public class JDriveImp implements JDrive {
 			}
 		}
 		long endTime = System.nanoTime();
-		System.out.println("Took "+(endTime - startTime) + " ns"); 
+		System.out.println("Took "+(endTime - startTime) + " ns");
 
 	}
 
 	@Override
-	public void getAllSpreadSheets() {
+	public List<SpreadsheetEntry> getAllSpreadSheets() {
+		List<SpreadsheetEntry> spreadsheets_entries = null;
 		try{
-		SpreadsheetService service = new Auth().getSpreadsheetService();
-		URL SPREADSHEET_FEED_URL = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full");
+			SpreadsheetService service = new Auth().getSpreadsheetService();
 
-		// Make a request to the API and get all spreadsheets.
-		SpreadsheetFeed feed = service.getFeed(SPREADSHEET_FEED_URL, SpreadsheetFeed.class);
-		List<SpreadsheetEntry> spreadsheets_entries  = feed.getEntries();
-		
-		if (spreadsheets_entries.size() == 0) {
-			System.out.println("No files found. Exiting");
-		}
-		
-		for (SpreadsheetEntry ent : spreadsheets_entries) {
-			System.out.println(ent.getTitle().getPlainText() + " --> " + ent.getId());
-		}
+
+			// Make a request to the API and get all spreadsheets.
+			SpreadsheetFeed feed = service.getFeed(SPREADSHEET_FEED_URL, SpreadsheetFeed.class);
+			spreadsheets_entries  = feed.getEntries();
+
+			if (spreadsheets_entries.size() == 0) {
+				System.out.println("No files found. Exiting");
+			}
+
+			for (SpreadsheetEntry ent : spreadsheets_entries) {
+				System.out.println(ent.getTitle().getPlainText() + " --> " + ent.getId());
+			}
 		}catch (Exception e){
 			e.printStackTrace();
 		}
+
+		return spreadsheets_entries;
 	}
-	
+
+	@Override
+	public List<SpreadsheetEntry> findSpreadSheet(String name){
+		List<SpreadsheetEntry> spreadsheets_entries = null;
+		List<SpreadsheetEntry> spreadsheets_entries_ = new ArrayList<SpreadsheetEntry>();
+		try{
+			SpreadsheetService service = new Auth().getSpreadsheetService();
+
+			//Query query = new Query(SPREADSHEET_FEED_URL);
+			//query.setFullTextQuery(name);
+
+			// Make a request to the API and get all spreadsheets.
+			SpreadsheetFeed feed = service.getFeed(SPREADSHEET_FEED_URL, SpreadsheetFeed.class);
+			spreadsheets_entries  = feed.getEntries();
+
+			if (spreadsheets_entries.size() == 0) {
+				System.out.println("No files found. Exiting");
+			}
+
+			for (SpreadsheetEntry ent : spreadsheets_entries) {
+				if(ent.getTitle().getPlainText().toLowerCase().contains(name.toLowerCase())){
+					spreadsheets_entries_.add(ent);
+				}
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+		return spreadsheets_entries;
+	}
+
+	public void updateFileContent(WorksheetEntry worksheet, int row, int column, String content)
+				throws ServiceException, IOException {
+					try{
+						SpreadsheetService service = new Auth().getSpreadsheetService();
+						URL cellFeedUrl = worksheet.getCellFeedUrl();
+						CellFeed cellFeed = service.getFeed(cellFeedUrl, CellFeed.class);
+						CellEntry cell = new CellEntry(row, column, content);
+						cellFeed.insert(cell);
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+
+		}
+
+	public static void main(String[] args) {
+		try{
+			SpreadsheetService service = new Auth().getSpreadsheetService();
+			List<SpreadsheetEntry> entries =	new JDriveImp().findSpreadSheet("Gupta");
+			WorksheetFeed worksheetFeed = service.getFeed(entries.get(0).getWorksheetFeedUrl(), WorksheetFeed.class);
+			List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
+			WorksheetEntry worksheet = worksheets.get(0);
+			new JDriveImp().updateFileContent(worksheet, 1,1,"Gupta");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+
+	}
+
 }
