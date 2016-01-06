@@ -11,6 +11,23 @@ public boolean deleteFile (String fileId);
 public void uploadAllFiles(String path, String parentId) throws IOException;
 public void uploadAllFilesParallel(String path, String parentId, FileFilter filter);
 ```
+You can also change the content of any worksheet. For this you will need the reference to the workbook which is a part of the spreadsheet. 
+Sample Code:
+```
+public static void chnageWorksheetContent() {
+		try{
+			JDrive jdrive = new JDriveImp();
+			SpreadsheetService service = new Auth().getSpreadsheetService();
+			List<SpreadsheetEntry> entries =	jdrive.findSpreadSheet("name");
+			WorksheetFeed worksheetFeed = service.getFeed(entries.get(0).getWorksheetFeedUrl(), WorksheetFeed.class);
+			List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
+			WorksheetEntry worksheet = worksheets.get(0);
+			jdrive.updateFileContent(worksheet, 1,1,"TestData");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+```
 and removing the boiler plate code. On addition you can use single service to access multiple Google Drive sources(doc,spreadsheet). 
 
 This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at https://developers.google.com/drive/v2/web/quickstart/java and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. 
