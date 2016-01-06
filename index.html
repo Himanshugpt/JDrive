@@ -31,7 +31,7 @@
         <h1>
 <a id="jdrive" class="anchor" href="#jdrive" aria-hidden="true"><span class="octicon octicon-link"></span></a>JDrive</h1>
 
-<p>This wraps the Google Drive API to insert and delete files in Google Drive. This API let you use simple API like </p>
+<p>This wraps the Google Drive API to insert and delete files in Google Drive. Also functionality of accessing spreaadsheets are being added. This API let you use simple API like </p>
 
 <pre><code>public File uploadFile(String fileName, String description ,String parentId);
 </code></pre>
@@ -43,21 +43,27 @@
 public void uploadAllFilesParallel(String path, String parentId, FileFilter filter);
 </code></pre>
 
-<p>and removing the boiler plate code. </p>
+<p>You can also change the content of any worksheet. For this you will need the reference to the workbook which is a part of the spreadsheet. 
+Sample Code:</p>
 
-<p>This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at <a href="https://developers.google.com/drive/v2/web/quickstart/java">https://developers.google.com/drive/v2/web/quickstart/java</a> and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. </p>
-
-<p>For sanity checks you can use the test cases. Run </p>
-
-<pre><code>gradle test
+<pre><code>public static void chnageWorksheetContent() {
+        try{
+            JDrive jdrive = new JDriveImp();
+            SpreadsheetService service = new Auth().getSpreadsheetService();
+            List&lt;SpreadsheetEntry&gt; entries =    jdrive.findSpreadSheet("name");
+            WorksheetFeed worksheetFeed = service.getFeed(entries.get(0).getWorksheetFeedUrl(), WorksheetFeed.class);
+            List&lt;WorksheetEntry&gt; worksheets = worksheetFeed.getEntries();
+            WorksheetEntry worksheet = worksheets.get(0);
+            jdrive.updateFileContent(worksheet, 1,1,"TestData");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 </code></pre>
 
-<p>This will generate a test report at build/test/index.html .  </p>
+<p>and removing the boiler plate code. On addition you can use single service to access multiple Google Drive sources(doc,spreadsheet). </p>
 
-<h2>
-<a id="test-cases" class="anchor" href="#test-cases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Test Cases</h2>
-
-<p>In this project jUnit test cases depends on hard coded values which are specific for the current user. I have not made it configurable yet, so if you want to use it then please go through it and fix it for yourself.  </p>
+<p>This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at <a href="https://developers.google.com/drive/v2/web/quickstart/java">https://developers.google.com/drive/v2/web/quickstart/java</a> and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. </p>
 
 <h2>
 <a id="how-to-build" class="anchor" href="#how-to-build" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to build</h2>
@@ -69,6 +75,20 @@ From the command line run </p>
 </code></pre>
 
 <p>This will compile the project and create a jar file named <em>'JDrive.jar'</em> in the build/libs/ folder. </p>
+
+<h3>
+<a id="test-cases" class="anchor" href="#test-cases" aria-hidden="true"><span class="octicon octicon-link"></span></a>Test Cases</h3>
+
+<p>In this project jUnit test cases depends on hard coded values which are specific for the current user. I have not made it configurable yet, so if you want to use it then please go through it and fix it for yourself.  </p>
+
+<p>For sanity checks you can use the test cases. Run </p>
+
+<pre><code>gradle test
+</code></pre>
+
+<p>This will generate a test report at build/test/index.html .  </p>
+
+<p>If you have any suggestions then open a issue and I will try working on it. </p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/himanshugpt">himanshugpt</a></p>
