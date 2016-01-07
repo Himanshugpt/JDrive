@@ -224,19 +224,4 @@ public class JDriveImp implements JDrive {
 	  }
   }
 
-	// public static void main(String[] args) {
-	// 	try{
-	// 		JDrive jdrive = new JDriveImp();
-	// 		List<SpreadsheetEntry> entries =	jdrive.findSpreadSheet("name");
-	// 		WorksheetFeed worksheetFeed = spradsheet_service.getFeed(entries.get(0).getWorksheetFeedUrl(), WorksheetFeed.class);
-	// 		List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
-	// 		WorksheetEntry worksheet = worksheets.get(0);
-	// 		jdrive.updateFileContent(worksheet, 1,1,"TestData");
-	// 	}catch(Exception e){
-	// 		e.printStackTrace();
-	// 	}
-	//
-	//
-	// }
-
 }
