@@ -75,7 +75,7 @@ public interface JDrive {
 
 	/**
 	 * This method updates the cell content of a workbook.
-	 * If you have a formula then start it with '=' 
+	 * If you have a formula then start it with '='
 	 * @param worksheet
 	 * @param row
 	 * @param column
@@ -85,5 +85,16 @@ public interface JDrive {
 	 */
 	public void updateFileContent(WorksheetEntry worksheet, int row, int column, String content)
 			throws ServiceException, IOException;
+
+  /**
+   * [addWorksheet description]
+   * @param   spredsheet
+   * @param   worksheet
+   * @return  True if successfully it adds a worksheet to the given spreadsheet
+   * other it returns False
+   */
+  public boolean addWorksheet(SpreadsheetEntry spredsheet, WorksheetEntry worksheet);
+
+  
 
 }

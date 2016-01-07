@@ -27,15 +27,17 @@ import com.google.gdata.util.*;
 */
 public class JDriveImp implements JDrive {
 
-	Drive service = null;
-
-URL SPREADSHEET_FEED_URL = null;
+	private Drive drive = null;
+	private URL SPREADSHEET_FEED_URL = null;
+	private SpreadsheetService spradsheet_service = null;
 
 	public JDriveImp() {
 		try {
-			this.service = new Auth().getDriveService();
+			Auth auth = new Auth();
+			this.drive = auth.getDriveService();
+			this.spradsheet_service = auth.getSpreadsheetService();
 			SPREADSHEET_FEED_URL = new URL("https://spreadsheets.google.com/feeds/spreadsheets/private/full");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -68,7 +70,7 @@ URL SPREADSHEET_FEED_URL = null;
 		java.io.File fileContent = new java.io.File(fileName);
 		FileContent mediaContent = new FileContent(mimeType, fileContent);
 		try {
-			File file = service.files().insert(body, mediaContent).setConvert(true).execute();
+			File file = drive.files().insert(body, mediaContent).setConvert(true).execute();
 			return file;
 		} catch (IOException e) {
 			System.out.println("An error occured>>>>>: " + e);
@@ -79,7 +81,7 @@ URL SPREADSHEET_FEED_URL = null;
 	@Override
 	public boolean deleteFile(String fileId) {
 		try{
-			service.files().delete(fileId).execute();
+			drive.files().delete(fileId).execute();
 			return true;
 		} catch (IOException e) {
 			System.out.println("An error occured>>>>>: " + e);
@@ -142,11 +144,8 @@ URL SPREADSHEET_FEED_URL = null;
 	public List<SpreadsheetEntry> getAllSpreadSheets() {
 		List<SpreadsheetEntry> spreadsheets_entries = null;
 		try{
-			SpreadsheetService service = new Auth().getSpreadsheetService();
-
-
 			// Make a request to the API and get all spreadsheets.
-			SpreadsheetFeed feed = service.getFeed(SPREADSHEET_FEED_URL, SpreadsheetFeed.class);
+			SpreadsheetFeed feed = spradsheet_service.getFeed(SPREADSHEET_FEED_URL, SpreadsheetFeed.class);
 			spreadsheets_entries  = feed.getEntries();
 
 			if (spreadsheets_entries.size() == 0) {
@@ -168,13 +167,11 @@ URL SPREADSHEET_FEED_URL = null;
 		List<SpreadsheetEntry> spreadsheets_entries = null;
 		List<SpreadsheetEntry> spreadsheets_entries_ = new ArrayList<SpreadsheetEntry>();
 		try{
-			SpreadsheetService service = new Auth().getSpreadsheetService();
-
 			//Query query = new Query(SPREADSHEET_FEED_URL);
 			//query.setFullTextQuery(name);
 
 			// Make a request to the API and get all spreadsheets.
-			SpreadsheetFeed feed = service.getFeed(SPREADSHEET_FEED_URL, SpreadsheetFeed.class);
+			SpreadsheetFeed feed = spradsheet_service.getFeed(SPREADSHEET_FEED_URL, SpreadsheetFeed.class);
 			spreadsheets_entries  = feed.getEntries();
 
 			if (spreadsheets_entries.size() == 0) {
@@ -196,9 +193,8 @@ URL SPREADSHEET_FEED_URL = null;
 	public void updateFileContent(WorksheetEntry worksheet, int row, int column, String content)
 				throws ServiceException, IOException {
 					try{
-						SpreadsheetService service = new Auth().getSpreadsheetService();
 						URL cellFeedUrl = worksheet.getCellFeedUrl();
-						CellFeed cellFeed = service.getFeed(cellFeedUrl, CellFeed.class);
+						CellFeed cellFeed = spradsheet_service.getFeed(cellFeedUrl, CellFeed.class);
 						CellEntry cell = new CellEntry(row, column, content);
 						cellFeed.insert(cell);
 					}catch(Exception e){
@@ -207,19 +203,30 @@ URL SPREADSHEET_FEED_URL = null;
 
 		}
 
-	public static void main(String[] args) {
-		try{
-			SpreadsheetService service = new Auth().getSpreadsheetService();
-			List<SpreadsheetEntry> entries =	new JDriveImp().findSpreadSheet("Gupta");
-			WorksheetFeed worksheetFeed = service.getFeed(entries.get(0).getWorksheetFeedUrl(), WorksheetFeed.class);
-			List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
-			WorksheetEntry worksheet = worksheets.get(0);
-			new JDriveImp().updateFileContent(worksheet, 1,1,"Gupta");
-		}catch(Exception e){
+  public boolean addWorksheet(SpreadsheetEntry spreadsheet, WorksheetEntry worksheet){
+		try {
+			URL worksheetFeedUrl = spreadsheet.getWorksheetFeedUrl();
+			this.spradsheet_service.insert(worksheetFeedUrl, worksheet);
+			return true;
+		}catch (Exception e){
 			e.printStackTrace();
+			return false;
 		}
-
-
 	}
+
+	// public static void main(String[] args) {
+	// 	try{
+	// 		JDrive jdrive = new JDriveImp();
+	// 		List<SpreadsheetEntry> entries =	jdrive.findSpreadSheet("name");
+	// 		WorksheetFeed worksheetFeed = spradsheet_service.getFeed(entries.get(0).getWorksheetFeedUrl(), WorksheetFeed.class);
+	// 		List<WorksheetEntry> worksheets = worksheetFeed.getEntries();
+	// 		WorksheetEntry worksheet = worksheets.get(0);
+	// 		jdrive.updateFileContent(worksheet, 1,1,"TestData");
+	// 	}catch(Exception e){
+	// 		e.printStackTrace();
+	// 	}
+	//
+	//
+	// }
 
 }
