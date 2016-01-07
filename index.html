@@ -31,20 +31,41 @@
         <h1>
 <a id="jdrive" class="anchor" href="#jdrive" aria-hidden="true"><span class="octicon octicon-link"></span></a>JDrive</h1>
 
-<p>This wraps the Google Drive API to insert and delete files in Google Drive. Also functionality of accessing spreaadsheets are being added. This API let you use simple API like </p>
+<p>This wraps the Google Drive API to insert and delete files in Google Drive. It also eases access to spreaadsheets. This API removes the boiler plate code. In addition you can use single service to access multiple Google Drive and Spreadsheets. </p>
+
+<p>This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at <a href="https://developers.google.com/drive/v2/web/quickstart/java">https://developers.google.com/drive/v2/web/quickstart/java</a> and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. </p>
+
+<h3>
+<a id="drive-api" class="anchor" href="#drive-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>Drive API</h3>
 
 <pre><code>public File uploadFile(String fileName, String description ,String parentId);
+public boolean deleteFile (String fileId);
 </code></pre>
 
-<pre><code>public boolean deleteFile (String fileId);
-</code></pre>
+<p>You can also upload multiple files from a given path. This API uses FileFilter so you can make use of regex to filter files. </p>
 
 <pre><code>public void uploadAllFiles(String path, String parentId) throws IOException;
 public void uploadAllFilesParallel(String path, String parentId, FileFilter filter);
 </code></pre>
 
-<p>You can also change the content of any worksheet. For this you will need the reference to the workbook which is a part of the spreadsheet. 
-Sample Code:</p>
+<h3>
+<a id="spreadsheet-api" class="anchor" href="#spreadsheet-api" aria-hidden="true"><span class="octicon octicon-link"></span></a>SpreadSheet API</h3>
+
+<p>You can list, find spreadsheets and add or delete worksheets. </p>
+
+<pre><code>public List&lt;SpreadsheetEntry&gt; getAllSpreadSheets();
+public List&lt;SpreadsheetEntry&gt; findSpreadSheet(String name);
+public boolean addWorksheet(SpreadsheetEntry spredsheet, WorksheetEntry worksheet);
+public boolean deleteWorksheet(WorksheetEntry worksheet);
+</code></pre>
+
+<p>You can also edit the content of the worksheet simply using a single API call. </p>
+
+<pre><code>public void updateFileContent(WorksheetEntry worksheet, int row, int column, String content)
+            throws ServiceException, IOException;
+</code></pre>
+
+<p>Sample Code:</p>
 
 <pre><code>public static void chnageWorksheetContent() {
         try{
@@ -60,10 +81,6 @@ Sample Code:</p>
         }
     }
 </code></pre>
-
-<p>and removing the boiler plate code. On addition you can use single service to access multiple Google Drive sources(doc,spreadsheet). </p>
-
-<p>This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at <a href="https://developers.google.com/drive/v2/web/quickstart/java">https://developers.google.com/drive/v2/web/quickstart/java</a> and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. </p>
 
 <h2>
 <a id="how-to-build" class="anchor" href="#how-to-build" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to build</h2>
