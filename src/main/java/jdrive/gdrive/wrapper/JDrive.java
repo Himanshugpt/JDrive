@@ -95,6 +95,12 @@ public interface JDrive {
    */
   public boolean addWorksheet(SpreadsheetEntry spredsheet, WorksheetEntry worksheet);
 
-  
+  /**
+   * This method deletes the given WorksheetEntry 
+   * from the spreadsheet.
+   * @param worksheet
+   * @return true if successful otherwise false
+   */
+  public boolean deleteWorksheet(WorksheetEntry worksheet);
 
 }

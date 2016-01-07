@@ -213,6 +213,16 @@ public class JDriveImp implements JDrive {
 			return false;
 		}
 	}
+  
+  public boolean deleteWorksheet(WorksheetEntry worksheet){
+	  try {
+		  worksheet.delete();
+		  return true;
+	  }catch (Exception e){
+		  e.printStackTrace();
+		  return false;
+	  }
+  }
 
 	// public static void main(String[] args) {
 	// 	try{
