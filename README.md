@@ -1,17 +1,33 @@
 # JDrive
 
-This wraps the Google Drive API to insert and delete files in Google Drive. Also functionality of accessing spreaadsheets are being added. This API let you use simple API like 
+This wraps the Google Drive API to insert and delete files in Google Drive. It also eases access to spreaadsheets. This API removes the boiler plate code. In addition you can use single service to access multiple Google Drive and Spreadsheets. 
+
+This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at https://developers.google.com/drive/v2/web/quickstart/java and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. 
+
+###Drive API
 ```
 public File uploadFile(String fileName, String description ,String parentId);
-```
-```
 public boolean deleteFile (String fileId);
 ```
+
+You can also upload multiple files from a given path. This API uses FileFilter so you can make use of regex to filter files. 
 ```
 public void uploadAllFiles(String path, String parentId) throws IOException;
 public void uploadAllFilesParallel(String path, String parentId, FileFilter filter);
 ```
-You can also change the content of any worksheet. For this you will need the reference to the workbook which is a part of the spreadsheet. 
+###SpreadSheet API
+You can list, find spreadsheets and add or delete worksheets. 
+```
+public List<SpreadsheetEntry> getAllSpreadSheets();
+public List<SpreadsheetEntry> findSpreadSheet(String name);
+public boolean addWorksheet(SpreadsheetEntry spredsheet, WorksheetEntry worksheet);
+public boolean deleteWorksheet(WorksheetEntry worksheet);
+```
+You can also edit the content of the worksheet simply using a single API call. 
+```
+public void updateFileContent(WorksheetEntry worksheet, int row, int column, String content)
+			throws ServiceException, IOException;
+```
 Sample Code:
 ```
 public static void chnageWorksheetContent() {
@@ -28,10 +44,6 @@ public static void chnageWorksheetContent() {
 		}
 	}
 ```
-and removing the boiler plate code. On addition you can use single service to access multiple Google Drive sources(doc,spreadsheet). 
-
-This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at https://developers.google.com/drive/v2/web/quickstart/java and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. 
-
 ## How to build
 You can download the source and go to project root directory. This project needs [Gradle](http://gradle.org/getting-started-gradle-java/). More help for installing gradle is provided [here](https://docs.gradle.org/current/userguide/installation.html). 
 From the command line run 
@@ -50,5 +62,3 @@ gradle test
 This will generate a test report at build/test/index.html .  
 
 If you have any suggestions then open a issue and I will try working on it. 
-
-
