@@ -59,23 +59,26 @@ public interface JDrive {
 	public void uploadAllFilesParallel(String path, String parentId, FileFilter filter);
 
 	/**
-	 * This method returns a list of the SpreadsheetEntry
-	 * in which each entry represents a spreadsheet
+	 * This method returns a list of the SpreadsheetEntry in which each entry
+	 * represents a spreadsheet
+	 * 
 	 * @return List<SpreadsheetEntry>
 	 */
 	public List<SpreadsheetEntry> getAllSpreadSheets();
 
 	/**
-	 * This method returns list of the spreadsheets
-	 * whose name contains the provided 'name' text.
+	 * This method returns list of the spreadsheets whose name contains the
+	 * provided 'name' text.
+	 * 
 	 * @param name
 	 * @return List<SpreadsheetEntry>
 	 */
 	public List<SpreadsheetEntry> findSpreadSheet(String name);
 
 	/**
-	 * This method updates the cell content of a workbook.
-	 * If you have a formula then start it with '='
+	 * This method updates the cell content of a workbook. If you have a formula
+	 * then start it with '='
+	 * 
 	 * @param worksheet
 	 * @param row
 	 * @param column
@@ -86,21 +89,29 @@ public interface JDrive {
 	public void updateFileContent(WorksheetEntry worksheet, int row, int column, String content)
 			throws ServiceException, IOException;
 
-  /**
-   * [addWorksheet description]
-   * @param   spredsheet
-   * @param   worksheet
-   * @return  True if successfully it adds a worksheet to the given spreadsheet
-   * other it returns False
-   */
-  public boolean addWorksheet(SpreadsheetEntry spredsheet, WorksheetEntry worksheet);
+	/**
+	 * [addWorksheet description]
+	 * 
+	 * @param spredsheet
+	 * @param worksheet
+	 * @return True if successfully it adds a worksheet to the given spreadsheet
+	 *         other it returns False
+	 */
+	public boolean addWorksheet(SpreadsheetEntry spredsheet, WorksheetEntry worksheet);
 
-  /**
-   * This method deletes the given WorksheetEntry 
-   * from the spreadsheet.
-   * @param worksheet
-   * @return true if successful otherwise false
-   */
-  public boolean deleteWorksheet(WorksheetEntry worksheet);
+	/**
+	 * This method deletes the given WorksheetEntry from the spreadsheet.
+	 * 
+	 * @param worksheet
+	 * @return true if successful otherwise false
+	 */
+	public boolean deleteWorksheet(WorksheetEntry worksheet);
+	
+	/**
+	 * Method to get worksheets from a spreadhseet
+	 * @param spreadsheet
+	 * @return
+	 */
+	public List<WorksheetEntry> getWorksheets(SpreadsheetEntry spreadsheet) throws Exception;
 
 }
