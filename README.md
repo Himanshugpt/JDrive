@@ -5,31 +5,31 @@ This wraps the Google Drive API to insert and delete files in Google Drive. It a
 This API also needs secret auth key to communicate with Google Drive Server. Make sure you follow the instructions at https://developers.google.com/drive/v2/web/quickstart/java and place the file in the resources folder. A manual authentication of access will be required at the first time to validate the access. 
 
 ###Drive API
-```
+```java
 public File uploadFile(String fileName, String description ,String parentId);
 public boolean deleteFile (String fileId);
 ```
 
 You can also upload multiple files from a given path. This API uses FileFilter so you can make use of regex to filter files. 
-```
+```java
 public void uploadAllFiles(String path, String parentId) throws IOException;
 public void uploadAllFilesParallel(String path, String parentId, FileFilter filter);
 ```
 ###SpreadSheet API
 You can list, find spreadsheets and add or delete worksheets. 
-```
+```java
 public List<SpreadsheetEntry> getAllSpreadSheets();
 public List<SpreadsheetEntry> findSpreadSheet(String name);
 public boolean addWorksheet(SpreadsheetEntry spredsheet, WorksheetEntry worksheet);
 public boolean deleteWorksheet(WorksheetEntry worksheet);
 ```
 You can also edit the content of the worksheet simply using a single API call. 
-```
+```java
 public void updateFileContent(WorksheetEntry worksheet, int row, int column, String content)
 			throws ServiceException, IOException;
 ```
 Sample Code:
-```
+```java
 public static void chnageWorksheetContent() {
 		try{
 			JDrive jdrive = new JDriveImp();
